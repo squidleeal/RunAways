@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Maratonas</title>
+	<link rel="stylesheet" href="{% static 'sistemas/maratonas.css' %}">
+</head>
+<body>
+	<main class="page">
+		<header class="header">
+			<h1>Maratonas</h1>
+			<a class="back-link" href="{% url 'home' %}">Voltar para Login</a>
+		</header>
+
+		<nav class="tabs">
+			<a class="tab-link {% if active_tab == 'lista' %}active{% endif %}" href="{% url 'maratonas' %}">Lista</a>
+			<a class="tab-link {% if active_tab == 'criar' %}active{% endif %}" href="{% url 'criar_maratona' %}">Criar Maratona</a>
+		</nav>
+
+		{% if messages %}
+			{% for message in messages %}
+				<p class="message {{ message.tags }}">{{ message }}</p>
+			{% endfor %}
+		{% endif %}
+
+		{% if maratonas %}
+			<section class="grid">
+				{% for maratona in maratonas %}
+					<article class="card">
+						<div class="card-content">
+							{% if maratona.imagem %}
+								<img class="maratona-image" src="{{ maratona.imagem.url }}" alt="Imagem da maratona {{ maratona.cidade }}">
+							{% endif %}
+							<h2>{{ maratona.cidade }}</h2>
+							<p><strong>Data:</strong> {{ maratona.data|date:"d/m/Y" }}</p>
+							<p><strong>Distância:</strong> {{ maratona.distancia }} km</p>
+						</div>
+						<div class="card-actions">
+							<form method="post" action="{% url 'excluir_maratona' maratona.id %}">
+								{% csrf_token %}
+								<button class="delete-button" type="submit" onclick="return confirm('Tem certeza que deseja excluir esta maratona?');">
+									❌
+								</button>
+							</form>
+							<a class="edit-button" href="{% url 'editar_maratona' maratona.id %}">✏️</a>
+						</div>
+					</article>
+				{% endfor %}
+			</section>
+		{% else %}
+			<section class="empty-state">
+				<p>Nenhuma maratona cadastrada ainda.</p>
+				<p>Clique em Criar Maratona para cadastrar a primeira.</p>
+				<a class="admin-button" href="{% url 'criar_maratona' %}">Criar Maratona</a>
+			</section>
+		{% endif %}
+	</main>
+</body>
+</html>

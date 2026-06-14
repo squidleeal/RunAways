@@ -61,3 +61,24 @@ button {
 .message.success {
     color: #166534;
 }
+
+.message.warning {
+    color: #92400e;
+}
+
+.admin-link {
+    margin: 12px 0 0;
+    font-size: 13px;
+    text-align: center;
+    color: #4b5563;
+}
+
+.admin-link a {
+    color: #111827;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.admin-link a:hover {
+    text-decoration: underline;
+}
